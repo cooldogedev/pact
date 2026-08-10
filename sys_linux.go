@@ -10,7 +10,7 @@ var pageSize = uintptr(unix.Getpagesize())
 
 // reserve reserves inaccessible virtual memory.
 func reserve(size uintptr) (unsafe.Pointer, error) {
-	addr, err := unix.MmapPtr(
+	return unix.MmapPtr(
 		-1,
 		0,
 		nil,
@@ -18,7 +18,6 @@ func reserve(size uintptr) (unsafe.Pointer, error) {
 		unix.PROT_NONE,
 		unix.MAP_ANON|unix.MAP_PRIVATE,
 	)
-	return addr, err
 }
 
 // commit makes a reserved range readable and writable.
