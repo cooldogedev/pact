@@ -1,0 +1,61 @@
+name: Go
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: go-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Test
+        run: go test ./...
+
+      - name: Race test
+        run: go test -race ./...
+
+      - name: Pointer checking test
+        env:
+          GOEXPERIMENT: cgocheck2
+        run: go test ./...
+
+      - name: Trace test
+        run: go test -trace=go-test.trace ./...
+
+      - name: Upload test trace
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: go-test-trace-${{ matrix.os }}
+          path: go-test.trace
+          if-no-files-found: ignore
