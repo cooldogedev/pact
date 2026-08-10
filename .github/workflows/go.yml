@@ -50,12 +50,10 @@ jobs:
         run: go test ./...
 
       - name: Trace test
-        run: go test -trace=go-test.trace ./...
+        run: go test -count=1 -trace="${{ github.workspace }}/go-test.trace" .
 
       - name: Upload test trace
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: go-test-trace-${{ matrix.os }}
-          path: go-test.trace
-          if-no-files-found: ignore
+          path: ${{ github.workspace }}/go-test.trace
