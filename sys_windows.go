@@ -19,7 +19,7 @@ func reserve(size uintptr) (unsafe.Pointer, error) {
 	if err != nil {
 		return nil, err
 	}
-	return unsafe.Pointer(addr), nil
+	return unsafe.Add(nil, addr), nil
 }
 
 // commit makes a reserved range readable and writable.
