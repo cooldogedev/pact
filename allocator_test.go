@@ -88,7 +88,7 @@ func TestAllocSliceRejectsSizeOverflow(t *testing.T) {
 }
 
 func TestAllocSliceRejectsLengthConversionOverflow(t *testing.T) {
-	if _, err := AllocSlice[struct{}](nil, 0, maxIntValue+1); !errors.Is(err, ErrOutOfMemory) {
+	if _, err := AllocSlice[struct{}](nil, 0, maxInt+1); !errors.Is(err, ErrOutOfMemory) {
 		t.Fatalf("AllocSlice() = %v, want %v", err, ErrOutOfMemory)
 	}
 }

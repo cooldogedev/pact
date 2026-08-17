@@ -23,8 +23,8 @@ var (
 
 const (
 	// maxUintptr is the largest value that fits in a uintptr.
-	maxUintptr  = ^uintptr(0)
-	maxIntValue = maxUintptr >> 1
+	maxUintptr = ^uintptr(0)
+	maxInt     = maxUintptr >> 1
 )
 
 // ByteAllocator allocates raw memory that remains valid until Release.
@@ -99,7 +99,7 @@ func AllocSlice[T any](alloc ByteAllocator, length uintptr, capacity ...uintptr)
 		return nil, ErrInvalidLength
 	}
 
-	if c > maxIntValue {
+	if c > maxInt {
 		return nil, ErrOutOfMemory
 	}
 

@@ -51,7 +51,7 @@ func NewPool(size, align, capacity uintptr) (*Pool, error) {
 		bitmapSize++
 	}
 
-	if bitmapSize > maxIntValue {
+	if bitmapSize > maxInt {
 		return nil, ErrOutOfMemory
 	}
 
