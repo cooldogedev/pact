@@ -29,10 +29,10 @@ func commit(addr unsafe.Pointer, size uintptr) error {
 // decommit discards the pages backing a range and makes it inaccessible.
 func decommit(addr unsafe.Pointer, size uintptr) error {
 	b := unsafe.Slice((*byte)(addr), size)
-	if err := unix.Madvise(b, unix.MADV_DONTNEED); err != nil {
+	if err := unix.Mprotect(b, unix.PROT_NONE); err != nil {
 		return err
 	}
-	return unix.Mprotect(b, unix.PROT_NONE)
+	return unix.Madvise(b, unix.MADV_DONTNEED)
 }
 
 // release unmaps a reserved range.
