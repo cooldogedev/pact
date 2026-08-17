@@ -16,7 +16,7 @@ var (
 	ErrInvalidLength   = errors.New("invalid length")
 	ErrInvalidSize     = errors.New("invalid size")
 
-	ErrInvalidAlignment = errors.New("invalid argument")
+	ErrInvalidAlignment = errors.New("invalid alignment")
 	ErrInvalidPointer   = errors.New("invalid pointer")
 	ErrAlreadyFree      = errors.New("pointer is already free")
 )
