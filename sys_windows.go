@@ -30,20 +30,15 @@ func commit(addr unsafe.Pointer, size uintptr) error {
 		windows.MEM_COMMIT,
 		windows.PAGE_READWRITE,
 	)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }
 
 // decommit releases a range's physical storage but keeps its reservation.
 func decommit(addr unsafe.Pointer, size uintptr) error {
-	err := windows.VirtualFree(uintptr(addr), size, windows.MEM_DECOMMIT)
-	return err
+	return windows.VirtualFree(uintptr(addr), size, windows.MEM_DECOMMIT)
 }
 
 // release releases a reserved range.
 func release(addr unsafe.Pointer, _ uintptr) error {
-	err := windows.VirtualFree(uintptr(addr), 0, windows.MEM_RELEASE)
-	return err
+	return windows.VirtualFree(uintptr(addr), 0, windows.MEM_RELEASE)
 }
