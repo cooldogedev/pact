@@ -35,19 +35,6 @@ func TestAlignUp(t *testing.T) {
 	}
 }
 
-func TestAlignOffsetUsesAbsoluteAddress(t *testing.T) {
-	base := pageSize + 1
-	align := pageSize * 2
-	offset, err := alignOffset(base, 0, align)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if (base+offset)%align != 0 {
-		t.Fatalf("aligned address = %d, want a multiple of %d", base+offset, align)
-	}
-}
-
 func TestAllocSliceAllowsEmptySlice(t *testing.T) {
 	slice, err := AllocSlice[uint64](nil, 0)
 	if err != nil {

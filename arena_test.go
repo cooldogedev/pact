@@ -11,7 +11,6 @@ func newTestArena(t *testing.T, size uintptr) *Arena {
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	t.Cleanup(func() {
 		if arena.reg == nil {
 			return

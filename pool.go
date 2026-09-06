@@ -22,21 +22,19 @@ type Pool struct {
 }
 
 // NewPool creates a Pool with capacity blocks of at least size bytes.
-// align must be a power of two when it is greater than one.
+// align must be zero, one, or a power of two no larger than the system page size.
 func NewPool(size, align, capacity uintptr) (*Pool, error) {
 	var zero freeBlock
 	if capacity == 0 {
 		return nil, ErrInvalidCapacity
 	}
 
-	blockSize := max(size, unsafe.Sizeof(zero))
-	if align > 1 {
-		if align&(align-1) != 0 {
-			return nil, ErrInvalidAlignment
-		}
-		blockSize = alignUp(blockSize, align)
+	if align > pageSize || (align > 1 && align&(align-1) != 0) {
+		return nil, ErrInvalidAlignment
 	}
 
+	align = max(align, unsafe.Alignof(zero))
+	blockSize := alignUp(max(size, unsafe.Sizeof(zero)), align)
 	if blockSize == maxUintptr || capacity > maxUintptr/blockSize {
 		return nil, ErrOutOfMemory
 	}

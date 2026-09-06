@@ -30,6 +30,17 @@ func TestNewPoolRejectsInvalidCapacity(t *testing.T) {
 	}
 }
 
+func TestNewPoolRejectsAlignmentAbovePageSize(t *testing.T) {
+	pool, err := NewPool(8, pageSize*2, 1)
+	if pool != nil {
+		defer pool.Release()
+	}
+
+	if !errors.Is(err, ErrInvalidAlignment) {
+		t.Fatalf("NewPool() = %v, want %v", err, ErrInvalidAlignment)
+	}
+}
+
 func TestNewPoolRejectsInvalidAlignment(t *testing.T) {
 	if _, err := NewPool(8, 3, 1); !errors.Is(err, ErrInvalidAlignment) {
 		t.Fatalf("NewPool() = %v, want %v", err, ErrInvalidAlignment)

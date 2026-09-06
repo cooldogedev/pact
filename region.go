@@ -38,12 +38,10 @@ func (r *region) address(offset, size, align uintptr) (unsafe.Pointer, uintptr, 
 	}
 
 	if align > pageSize {
-		var err error
-		offset, err = alignOffset(uintptr(r.addr), offset, align)
-		if err != nil {
-			return nil, 0, err
-		}
-	} else if align > 1 {
+		return nil, 0, ErrInvalidAlignment
+	}
+
+	if align > 1 {
 		offset = alignUp(offset, align)
 	}
 

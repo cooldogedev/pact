@@ -146,16 +146,3 @@ func alignUp(x, align uintptr) uintptr {
 	}
 	return (x + align - 1) &^ (align - 1)
 }
-
-// alignOffset aligns base+offset and returns the resulting offset from base.
-func alignOffset(base, offset, align uintptr) (uintptr, error) {
-	if offset > maxUintptr-base {
-		return 0, ErrOutOfMemory
-	}
-
-	address := alignUp(base+offset, align)
-	if address == maxUintptr {
-		return 0, ErrOutOfMemory
-	}
-	return address - base, nil
-}

@@ -20,7 +20,7 @@ func NewArena(size uintptr) (*Arena, error) {
 }
 
 // Alloc allocates size bytes at the requested alignment.
-// align must be zero, one, or a power of two.
+// align must be zero, one, or a power of two no larger than the system page size.
 func (a *Arena) Alloc(size, align uintptr) (unsafe.Pointer, error) {
 	if a.reg == nil {
 		return nil, ErrReleased
